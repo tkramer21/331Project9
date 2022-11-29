@@ -317,8 +317,9 @@ class Graph:
 
     def unvisit_vertices(self) -> None:
         """
+        iterates through the vertices member and sets the visited member of each vertex object to False
 
-        :return:
+        :return: None
         """
         for val in self.vertices.values():
             val.visited = False
@@ -326,21 +327,37 @@ class Graph:
 
     def get_vertex_by_id(self, v_id: str) -> Vertex:
         """
-        PLEASE FILL OUT DOCSTRING
+        Determines if the given vertex id v_id is a key in the member vertices
+
+        :param v_id: the vertex id to be searched for
+        :return: the vertex object if v_id is a key; otherwise None
         """
-        pass
+        if v_id in self.vertices:
+            return self.vertices[v_id]
 
     def get_all_vertices(self) -> Set[Vertex]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Creates a set of all vertex objects in the graph
+
+        :return: a set of vertex objects present in the graph
         """
-        pass
+        verts = set()
+        for i in self.vertices.values():
+            verts.add(i)
+        return verts
+
 
     def get_edge_by_ids(self, begin_id: str, end_id: str) -> Tuple[str, str, float]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Creates a tuple containing begin_id, end_id, and the weight of the edge connecting them
+
+        :param begin_id: a string representing the id of a vertex
+        :param end_id: a string representing the id of the vertex to be checked against
+        :return: a tuple containing begin_id, end_id, and the weight of the edge connecting them
         """
-        pass
+        if begin_id in self.vertices:
+            if end_id in self.vertices[begin_id].adj:
+                return (begin_id, end_id, self.vertices[begin_id].adj[end_id])
 
     def get_all_edges(self) -> Set[Tuple[str, str, float]]:
         """
