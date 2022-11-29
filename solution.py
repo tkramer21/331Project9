@@ -10,6 +10,7 @@ import csv
 from typing import TypeVar, Tuple, List, Set, Dict
 
 import numpy as np
+import matplotlib
 
 T = TypeVar('T')
 Matrix = TypeVar('Matrix')  # Adjacency Matrix
@@ -91,27 +92,37 @@ class Vertex:
 
     def deg(self) -> int:
         """
-        PLEASE FILL OUT DOCSTRING
+        Determines the degree of a node of a graph
+        :return: an int representing the degree of the node
         """
-        pass
+        return len(self.adj)
 
     def get_outgoing_edges(self) -> Set[Tuple[str, float]]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Creates a set of tuples containing the outgoing edge identifiers and their weight
+        :return: set of tuples containing the outgoing edge identifiers and their weight
         """
-        pass
+        edges = set()
+        for key, val in self.adj.items():
+            edges.add((key, val))
+        return edges
 
     def euclidean_dist(self, other: Vertex) -> float:
         """
-        PLEASE FILL OUT DOCSTRING
-        """
-        pass
+        Determines the euclidean distance between one vertex and the current
+
+        :param other: a vertex object to find the distance against
+        :return: a float representing the euclidean distance        """
+        return math.sqrt((other.y - self.y)**2 + (other.x-self.x)**2)
 
     def taxicab_dist(self, other: Vertex) -> float:
         """
-        PLEASE FILL OUT DOCSTRING
+        Determines the taxicab distance between one vertex and the current
+
+        :param other: a vertex object to find the distance against
+        :return: a float representing the taxicab distance
         """
-        pass
+        return abs(self.x-other.x) + abs(self.y-other.y)
 
 
 class Graph:
@@ -306,9 +317,12 @@ class Graph:
 
     def unvisit_vertices(self) -> None:
         """
-        PLEASE FILL OUT DOCSTRING
+
+        :return:
         """
-        pass
+        for val in self.vertices.values():
+            val.visited = False
+
 
     def get_vertex_by_id(self, v_id: str) -> Vertex:
         """
