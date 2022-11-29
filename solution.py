@@ -361,9 +361,24 @@ class Graph:
 
     def get_all_edges(self) -> Set[Tuple[str, str, float]]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Creates a set of tuples containing the vertex edges and their weight
+
+        :return: a set of tuples containing each vertex id and their edge weight
         """
-        pass
+        edges = set()
+        count = 0
+        for vert in self.vertices: # iterates for self.size loops --> O(V)
+            for adj in self.vertices[vert].adj: # iterated for vertex.deg --> O(degV)
+                edges.add(self.get_edge_by_ids(vert, adj))
+                count += 1
+
+        deg = 0
+        for i in self.vertices:
+            deg += self.vertices[i].deg()
+        print(count)
+        print(self.size + deg)
+
+        return edges
 
     def _build_path(self, back_edges: Dict[str, str], begin_id: str, end_id: str) \
             -> Tuple[List[str], float]:
