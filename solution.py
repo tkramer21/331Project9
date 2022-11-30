@@ -376,12 +376,14 @@ class Graph:
     def _build_path(self, back_edges: Dict[str, str], begin_id: str, end_id: str) \
             -> Tuple[List[str], float]:
         """
+        Builds a path going from a dictionary, starting point, and an end point
 
-        :param back_edges:
-        :param begin_id:
-        :param end_id:
-        :return:
+        :param back_edges: a dictionary of node identifiers linking a path
+        :param begin_id: a string denoting the starting node of the path
+        :param end_id: a string denoting the ending node of the path
+        :return: a tuple containing a list of the path and an int representing the weight of traveling that path
         """
+
         ptr = end_id
         res = [end_id]
         weight = 0
@@ -390,11 +392,11 @@ class Graph:
             if ptr not in back_edges:
                 return ([], 0)
             res.append(back_edges[ptr])
-            temp = self.vertices[ptr].id
-            weight += self.vertices[ptr].adj[self.vertices[ptr].id]
+            weight += self.vertices[back_edges[ptr]].adj[ptr]
             ptr = back_edges[ptr]
 
-        res.append(begin_id)
+        res.reverse()
+        return res, weight
 
 
     def bfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
