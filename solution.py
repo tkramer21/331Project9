@@ -370,22 +370,32 @@ class Graph:
         for vert in self.vertices: # iterates for self.size loops --> O(V)
             for adj in self.vertices[vert].adj: # iterated for vertex.deg --> O(degV)
                 edges.add(self.get_edge_by_ids(vert, adj))
-                count += 1
-
-        deg = 0
-        for i in self.vertices:
-            deg += self.vertices[i].deg()
-        print(count)
-        print(self.size + deg)
 
         return edges
 
     def _build_path(self, back_edges: Dict[str, str], begin_id: str, end_id: str) \
             -> Tuple[List[str], float]:
         """
-        PLEASE FILL OUT DOCSTRING
+
+        :param back_edges:
+        :param begin_id:
+        :param end_id:
+        :return:
         """
-        pass
+        ptr = end_id
+        res = [end_id]
+        weight = 0
+
+        while ptr is not begin_id:
+            if ptr not in back_edges:
+                return ([], 0)
+            res.append(back_edges[ptr])
+            temp = self.vertices[ptr].id
+            weight += self.vertices[ptr].adj[self.vertices[ptr].id]
+            ptr = back_edges[ptr]
+
+        res.append(begin_id)
+
 
     def bfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
         """
