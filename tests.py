@@ -499,6 +499,8 @@ class GraphTests(unittest.TestCase):
         graph.add_to_graph('D', 'C')
         graph.add_to_graph('E', 'C')
         graph.add_to_graph('F', 'E')
+        graph.plot_show = True
+        graph.plot()
         subject = graph.topological_sort()
         self.assertTrue(check_if_topologically_sorted(graph, subject))
 

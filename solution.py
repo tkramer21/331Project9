@@ -8,6 +8,7 @@ import queue
 import time
 import csv
 from typing import TypeVar, Tuple, List, Set, Dict
+from queue import Queue
 
 import numpy as np
 import matplotlib
@@ -401,31 +402,106 @@ class Graph:
 
     def bfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Conducts a breadth first search of a Graph
+
+        :param begin_id: The vertex at which the search starts
+        :param end_id: The vertex to be searched for
+        :return: a tuple containing a list of the path from start to finish and the path weight
         """
-        pass
+
+        if len(self.vertices) != 0 and begin_id in self.vertices:
+            stack = Queue()
+            visited = dict()
+            stack.put(begin_id)
+
+            while not stack.empty():
+
+                curr = stack.get()
+
+                for adj in self.vertices[curr].adj:
+                    if adj not in visited:
+                        stack.put(adj)
+                        visited[adj] = curr
+                        if adj == end_id:
+                            return self._build_path(visited, begin_id, end_id)
+        return ([],0)
+
+
 
     def dfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Conducts a depth first search of  a Graph
+
+        :param begin_id: The vertex at which the search starts
+        :param end_id: The vertex to be searched for
+        :return: a tuple containing a list of the path from start to finish and the path weight
         """
 
         def dfs_inner(current_id: str, end_id: str, path: List[str]) -> Tuple[List[str], float]:
             """
-            PLEASE FILL OUT DOCSTRING
+            The recursive inner function of dfs. Will build a path using depth first search
+
+            :param current_id: a string representing the node being visited
+            :param end_id: a string representing the desired destination
+            :param path: a list containing strings representing the path from begin_id to end_id
+            :return: a tuple containing a list repr. the path and an int repr. the weight of the path
             """
-            pass
+
+            curr = stack.get()
+
+            for adj in self.vertices[current_id].adj:
+                if adj not in visited:
+                    visited[adj] = curr
+                    stack.put(adj)
+                    if adj == end_id:
+                        return self._build_path(visited, begin_id, end_id)
+
+                    dfs_inner(adj, end_id, path)
+
+            return self._build_path(visited, begin_id, end_id)
+
+
+        if len(self.vertices) != 0 and begin_id in self.vertices:
+            stack = Queue()
+            stack.put(begin_id)
+            visited = dict()
+            return dfs_inner(begin_id, end_id, stack)
+        return ([],0)
 
     def topological_sort(self) -> List[str]:
         """
-        PLEASE FILL OUT DOCSTRING
+
+        :return:
         """
 
         def topological_sort_inner(current_id: str) -> None:
             """
-            PLEASE FILL OUT DOCSTRING
+
+            :param current_id:
+            :return:
             """
-            pass
+            curr = stack.get()
+
+            for adj in self.vertices[current_id].adj:
+                if adj not in visited:
+                    visited[adj] = curr
+                    stack.put(adj)
+                    topological_sort_inner(adj)
+                    res.append(adj)
+
+
+        stack = Queue()
+        visited = dict()
+        if len(self.vertices) != 0:
+            res = []
+            for vert in self.vertices.keys():
+                if vert not in visited:
+                    res.append(vert)
+                    stack.put(vert)
+                    topological_sort_inner(vert)
+                return res
+
+        return []
 
     def friends_recommender(self, current_id: str) -> List[str]:
         """
