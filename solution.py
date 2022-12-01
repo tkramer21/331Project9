@@ -480,26 +480,44 @@ class Graph:
             :param current_id:
             :return:
             """
-            curr = stack.get()
 
             for adj in self.vertices[current_id].adj:
                 if adj not in visited:
-                    visited[adj] = curr
-                    stack.put(adj)
                     topological_sort_inner(adj)
-                    res.append(adj)
+            if current_id not in visited:
+                visited[current_id] = True
+                res.append(current_id)
+                visited[current_id] = True
 
 
-        stack = Queue()
+
         visited = dict()
-        if len(self.vertices) != 0:
-            res = []
+        res = []
+        if len(self.vertices) == 1:
+            for vert in self.vertices.keys():
+                res.append(vert)
+        elif len(self.vertices) != 0:
             for vert in self.vertices.keys():
                 if vert not in visited:
-                    res.append(vert)
-                    stack.put(vert)
                     topological_sort_inner(vert)
+
+        res.reverse()
+        return res
+
+
+
+'''        if len(self.vertices) == 1:
+            for vert in self.vertices.keys():
+                res.append(vert)
                 return res
+            
+        elif len(self.vertices) != 0:
+            for vert in self.vertices.keys():
+                if vert not in visited:
+                    stack.put(vert)
+                    res.append(vert)
+                    topological_sort_inner(vert)
+            return res
 
         return []
 
@@ -508,3 +526,5 @@ class Graph:
         PLEASE FILL OUT DOCSTRING
         """
         pass
+
+'''
