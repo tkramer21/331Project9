@@ -461,7 +461,7 @@ class GraphTests(unittest.TestCase):
         graph = Graph()
         graph.add_to_graph('a', 'b')
         subject = graph.topological_sort()
-        #self.assertEqual(subject, ['a', 'b'])
+        self.assertEqual(subject, ['a', 'b'])
 
         # (4) test on two edges
         graph = Graph()
@@ -499,8 +499,6 @@ class GraphTests(unittest.TestCase):
         graph.add_to_graph('D', 'C')
         graph.add_to_graph('E', 'C')
         graph.add_to_graph('F', 'E')
-        graph.plot_show = True
-        graph.plot()
         subject = graph.topological_sort()
         self.assertTrue(check_if_topologically_sorted(graph, subject))
 

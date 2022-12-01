@@ -450,8 +450,8 @@ class Graph:
             curr = stack.get()
 
             for adj in self.vertices[current_id].adj:
-                if adj not in visited:
-                    visited[adj] = curr
+                if not self.vertices[adj].visited:
+                    self.vertices[adj].visited = True
                     stack.put(adj)
                     if adj == end_id:
                         return self._build_path(visited, begin_id, end_id)
@@ -470,58 +470,38 @@ class Graph:
 
     def topological_sort(self) -> List[str]:
         """
+        Creates a list representing a graph topologically sorted
 
-        :return:
+        :return: A list of strings representing a graph in a valid topological order
         """
 
         def topological_sort_inner(current_id: str) -> None:
             """
+            The recursive inner function for topological_sort
 
-            :param current_id:
-            :return:
+            :param current_id: a string representing a vertex_id currently being evaluated
+            :return: A list of strings representing a graph in reverse topological order
             """
 
             for adj in self.vertices[current_id].adj:
-                if adj not in visited:
+                if not self.vertices[adj].visited:
                     topological_sort_inner(adj)
-            if current_id not in visited:
-                visited[current_id] = True
+            if not self.vertices[current_id].visited:
                 res.append(current_id)
-                visited[current_id] = True
+                self.vertices[current_id].visited = True
 
-
-
-        visited = dict()
         res = []
         if len(self.vertices) != 0:
             for vert in self.vertices.keys():
-                if vert not in visited:
+                if not self.vertices[vert].visited:
                     topological_sort_inner(vert)
 
         res.reverse()
         return res
 
 
-
-'''        if len(self.vertices) == 1:
-            for vert in self.vertices.keys():
-                res.append(vert)
-                return res
-            
-        elif len(self.vertices) != 0:
-            for vert in self.vertices.keys():
-                if vert not in visited:
-                    stack.put(vert)
-                    res.append(vert)
-                    topological_sort_inner(vert)
-            return res
-
-        return []
-
     def friends_recommender(self, current_id: str) -> List[str]:
         """
         PLEASE FILL OUT DOCSTRING
         """
         pass
-
-'''
