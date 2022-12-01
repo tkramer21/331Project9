@@ -493,10 +493,7 @@ class Graph:
 
         visited = dict()
         res = []
-        if len(self.vertices) == 1:
-            for vert in self.vertices.keys():
-                res.append(vert)
-        elif len(self.vertices) != 0:
+        if len(self.vertices) != 0:
             for vert in self.vertices.keys():
                 if vert not in visited:
                     topological_sort_inner(vert)
