@@ -257,9 +257,7 @@ class GraphTests(unittest.TestCase):
                 if i != j:
                     graph.vertices.get(char).adj[jar] = 26 * i + j
                     solution.add((char, jar, 26 * i + j))
-        # graph.size = len(graph.vertices)
-        # graph.plot_show = True
-        # graph.plot()
+
         subject = graph.get_all_edges()
         self.assertEqual(subject, solution)
 
@@ -430,8 +428,6 @@ class GraphTests(unittest.TestCase):
         graph = Graph(csvf='graphs_csv/dfs/7.csv')
 
         subject = graph.dfs('a', 'd')
-        graph.plot_show = True
-        graph.plot()
         self.assertIn(subject, [(['a', 'b', 'm', 'c', 'd'], 24),
                                 (['a', 'b', 'n', 'c', 'd'], 28)])
 
