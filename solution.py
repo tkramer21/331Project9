@@ -114,7 +114,7 @@ class Vertex:
 
         :param other: a vertex object to find the distance against
         :return: a float representing the euclidean distance        """
-        return math.sqrt((other.y - self.y)**2 + (other.x-self.x)**2)
+        return math.sqrt((other.y - self.y) ** 2 + (other.x - self.x) ** 2)
 
     def taxicab_dist(self, other: Vertex) -> float:
         """
@@ -123,7 +123,7 @@ class Vertex:
         :param other: a vertex object to find the distance against
         :return: a float representing the taxicab distance
         """
-        return abs(self.x-other.x) + abs(self.y-other.y)
+        return abs(self.x - other.x) + abs(self.y - other.y)
 
 
 class Graph:
@@ -325,7 +325,6 @@ class Graph:
         for val in self.vertices.values():
             val.visited = False
 
-
     def get_vertex_by_id(self, v_id: str) -> Vertex:
         """
         Determines if the given vertex id v_id is a key in the member vertices
@@ -347,7 +346,6 @@ class Graph:
             verts.add(i)
         return verts
 
-
     def get_edge_by_ids(self, begin_id: str, end_id: str) -> Tuple[str, str, float]:
         """
         Creates a tuple containing begin_id, end_id, and the weight of the edge connecting them
@@ -368,8 +366,8 @@ class Graph:
         """
         edges = set()
         count = 0
-        for vert in self.vertices: # iterates for self.size loops --> O(V)
-            for adj in self.vertices[vert].adj: # iterated for vertex.deg --> O(degV)
+        for vert in self.vertices:  # iterates for self.size loops --> O(V)
+            for adj in self.vertices[vert].adj:  # iterated for vertex.deg --> O(degV)
                 edges.add(self.get_edge_by_ids(vert, adj))
 
         return edges
@@ -399,7 +397,6 @@ class Graph:
         res.reverse()
         return res, weight
 
-
     def bfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
         """
         Conducts a breadth first search of a Graph
@@ -424,9 +421,7 @@ class Graph:
                         visited[adj] = curr
                         if adj == end_id:
                             return self._build_path(visited, begin_id, end_id)
-        return ([],0)
-
-
+        return ([], 0)
 
     def dfs(self, begin_id: str, end_id: str) -> Tuple[List[str], float]:
         """
@@ -468,8 +463,6 @@ class Graph:
 
             return path, cost
 
-
-
         if len(self.vertices) != 0 and begin_id in self.vertices:
             stack = Queue()
             stack.put(begin_id)
@@ -478,7 +471,7 @@ class Graph:
                 if res[0] != []:
                     if res[0][-1] == end_id:
                         return res
-        return ([],0)
+        return ([], 0)
 
     def topological_sort(self) -> List[str]:
         """
@@ -511,9 +504,42 @@ class Graph:
         res.reverse()
         return res
 
-
     def friends_recommender(self, current_id: str) -> List[str]:
         """
-        PLEASE FILL OUT DOCSTRING
+        Suggests new friends based on a graph representing connections.
+
+        :param current_id: a string representing the starting vertex in which the suggested friend list is generated
+        :return: A sorted list of strings based on how far removed they are from current_id /
+            secondary sort key is alphabetical
         """
-        pass
+
+        def reset_visit():
+            for i in self.vertices:
+                self.vertices[i].visited = False
+
+        reset_visit()
+        stack = Queue()
+        visited = dict()
+        depth = 0
+        stack.put(current_id)
+        friends = []
+
+        if len(self.vertices) != 0 and current_id in self.vertices:
+            while not stack.empty():
+
+                curr = stack.get()
+                for adj in self.vertices[curr].adj:
+                    if self.vertices[adj].visited == False:
+                        stack.put(adj)
+                        self.vertices[adj].visited = True
+                        if depth > 0 and adj is not current_id:
+                            visited[adj] = 1
+                    elif adj in visited and len(self.vertices[curr].adj) > 1:
+                        visited[adj] = (visited[adj] - 1)
+
+                depth += 1
+
+            friends = list(visited)
+            friends.sort(key=lambda depth: (visited[depth], depth))
+
+        return friends
