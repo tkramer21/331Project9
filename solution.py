@@ -449,19 +449,22 @@ class Graph:
 
             curr = stack.get()
             cost = 0
-            temp = 0
+            adjacent = self.vertices[current_id].adj
 
-            for adj in self.vertices[current_id].adj:
+            for adj in adjacent:
                 if not self.vertices[adj].visited:
-                    cost = self.vertices[curr].adj[adj]
-                    path.append(curr)
-                    self.vertices[adj].visited = True
+                    if not self.vertices[curr].visited:
+                        path.append(curr)
+                        self.vertices[curr].visited = True
+                        cost = self.vertices[curr].adj[adj]
                     stack.put(adj)
                     if adj == end_id:
                         path.append(adj)
+                        self.vertices[adj].visited = True
+                        cost = self.vertices[curr].adj[adj]
                         return path, cost
 
-                    return path, cost + dfs_inner(adj, end_id, path)[1]
+                    cost += dfs_inner(adj, end_id, path)[1]
 
             return path, cost
 
@@ -469,11 +472,12 @@ class Graph:
 
         if len(self.vertices) != 0 and begin_id in self.vertices:
             stack = Queue()
-            path = []
             stack.put(begin_id)
-            cost = 0
             if len(self.vertices) != 1:
-                return dfs_inner(begin_id, end_id, path)
+                res = dfs_inner(begin_id, end_id, [])
+                if res[0] != []:
+                    if res[0][-1] == end_id:
+                        return res
         return ([],0)
 
     def topological_sort(self) -> List[str]:
